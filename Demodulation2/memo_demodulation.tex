@@ -1,0 +1,120 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Memo
+%
+% The latex template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original author:
+% Rob Oakes (http://www.oak-tree.us) with modifications by:
+% Vel (vel@latextemplates.com)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[a4paper,11pt]{texMemo} % Set the paper size (letterpaper, a4paper, etc) and font size (10pt, 11pt or 12pt)
+
+\usepackage{amsmath}              %% permet de gnrer un index automatiquement
+\usepackage{numprint}
+\usepackage{parskip} % Adds spacing between paragraphs
+\usepackage[babel=true]{csquotes} % pour les guillemets. csquotes va utiliser la langue définie dans babel
+\setlength{\parindent}{15pt} % Indent paragraphs
+\usepackage{numprint}
+\usepackage[squaren,Gray]{SIunits} % pour les units 
+\usepackage{cancel} % pour barrer du texte
+\usepackage{multicol} % pour plusieurs equations sur la même ligne
+
+\graphicspath{{./figures/}}
+
+%----------------------------------------------------------------------------------------
+%	MEMO INFORMATION
+%----------------------------------------------------------------------------------------
+
+%\memoto{James Smith} % Recipient(s)
+
+\memofrom{Laurent Ravera} % Sender(s)
+
+\memosubject{Impact of modulation and demodulation operations in AC-readout} % Memo subject
+
+\memodate{May 29, 2017} % Date, set to \today for automatically printing todays date
+
+\logo{\includegraphics[width=0.25\textwidth]{logo-XIFU.png}} % logo at the top right of the memo
+
+\bibliographystyle{unsrt-fr_LR}
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+\maketitle % Print the memo header information
+
+%----------------------------------------------------------------------------------------
+%	MEMO CONTENT
+%----------------------------------------------------------------------------------------
+
+\section{Demodulation of the signal}
+
+In the TES the carrier signal $\cos\left(\omega t + \phi\right)$ is amplitude modulated by the "science signal" $S(t)$ and a noise contribution from the TES $N_{TES}(T)$. This noise is band-limited. Along the amplification chain an other noise contribution is added $N_{a}$. This contribution is a white noise. 
+The BBFB firmware demodulates this signal with a multiplication with the complex signal $e^{-i\omega t} $ (same frequency as the AC-carrier). The demodulated signal is:
+
+\begin{align}
+D(t)=&\left[\cos\left(\omega t + \phi\right)\times \left(S(t)+N_{TES}(t)\right)+N_a(t)\right]\times e^{-i\omega t} \nonumber \\
+=&\left\{ 
+	\begin{array}{ll}
+		\left[\cos\left(\omega t + \phi\right)\times  \left(S(t)+N_{TES}(t)\right)+N_a(t)\right]\times \cos\left(\omega t\right)\\
+		\left[-\cos\left(\omega t + \phi\right)\times  \left(S(t)+N_{TES}(t)\right)+N_a(t)\right]\times \sin\left(\omega t\right)\\
+	\end{array}
+	\right.\nonumber \\
+=&\left\{ 
+	\begin{array}{ll}
+		 \frac{S(t)}{2}\times \left[{\cos\left(2\omega t + \phi\right)}+cos\left(\phi\right)\right]+
+		 \frac{N_{TES}(t)}{2}\times \left[{\cos\left(2\omega t + \phi\right)}+cos\left(\phi\right)\right]+N_a(t)\times \cos\left(\omega t\right)\\
+		 \frac{-S(t)}{2}\times \left[{\sin\left(2\omega t + \phi\right)}+sin\left(-\phi\right)\right]
+		 -\frac{N_{TES}(t)}{2}\times \left[{\sin\left(2\omega t + \phi\right)}+sin\left(-\phi\right)\right]+N_a(t)\times \sin\left(\omega t\right)\\
+	\end{array}
+	\right. \nonumber \\ 
+\end{align}
+
+After the demodulation the signal is low-pass filtered to obtain the scientific signal that will be analysed by the event processor. We can then neglect the high frequency terms in the equation.
+
+\underline{In the information band}, the filtered signal is given by:
+\begin{align}
+D_f(t)=&\left\{ 
+	\begin{array}{ll}
+		 \frac{S(t)}{2}\times \left[\cancel{\cos\left(2\omega t + \phi\right)}+cos\left(\phi\right)\right]+
+		 \frac{N_{TES}(t)}{2}\times \left[\cancel{\cos\left(2\omega t + \phi\right)}+cos\left(\phi\right)\right]+N_a(t)\times \cos\left(\omega t\right)\\
+		 \frac{-S(t)}{2}\times \left[\cancel{\sin\left(2\omega t + \phi\right)}+sin\left(-\phi\right)\right]
+		 -\frac{N_{TES}(t)}{2}\times \left[\cancel{\sin\left(2\omega t + \phi\right)}+sin\left(-\phi\right)\right]+N_a(t)\times \sin\left(\omega t\right)\\
+	\end{array}
+	\right. \nonumber \\ 
+\end{align} 
+
+In this signal the contributions of the science signal, the TES noise and the amplification noise are:
+
+\begin{multicols}{3}\noindent
+\begin{equation}Var(S^d(t))=\frac{1}{4}Var(S(t)) \nonumber \end{equation} 
+\begin{equation}Var(N_{TES}^d(t))=\frac{1}{4}Var(N_{TES}(t)) \nonumber \end{equation}
+\begin{equation}Var(N_a^d(t))=Var(N_a(t))\end{equation}
+\end{multicols}
+
+If $N_{TES}>>N_a$ then the signal to noise ratio is unchanged by the modulation / demodulation operations.
+If $N_a>>N_{TES}$ the signal to noise ratio is decreased by 6 dB.
+
+
+\section{Comparison with DC-type readout}
+
+
+In the case of a DC-type biasing, the signal and the noises obtained after the readout directly: 
+
+\begin{multicols}{3}\noindent
+\begin{equation}S^d(t) = S(t) \nonumber \end{equation} 
+\begin{equation}N_{TES}^d(t)=N_{TES}(t) \nonumber \end{equation}
+\begin{equation}N^d(t)=N(t)\end{equation}
+\end{multicols}
+
+
+%----------------------------------------------------------------------------------------
+\bibliography{biblio}
+
+\end{document}

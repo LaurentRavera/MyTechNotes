@@ -1,0 +1,98 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Memo
+%
+% The latex template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original author:
+% Rob Oakes (http://www.oak-tree.us) with modifications by:
+% Vel (vel@latextemplates.com)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[a4paper,11pt]{texMemo} % Set the paper size (letterpaper, a4paper, etc) and font size (10pt, 11pt or 12pt)
+
+\usepackage{amsmath}              %% permet de générer un index automatiquement
+\usepackage{numprint}
+\usepackage{parskip} % Adds spacing between paragraphs
+\usepackage[babel=true]{csquotes} % pour les guillemets. csquotes va utiliser la langue déÈfinie dans babel
+\setlength{\parindent}{15pt} % Indent paragraphs
+\usepackage{numprint}
+\usepackage[squaren,Gray]{SIunits} % pour les unités 
+
+\graphicspath{{./figures/}}
+
+%----------------------------------------------------------------------------------------
+%	MEMO INFORMATION
+%----------------------------------------------------------------------------------------
+
+%\memoto{James Smith} % Recipient(s)
+
+\memofrom{Laurent Ravera} % Sender(s)
+
+\memosubject{Shape of current pulses in a TES in the case of critical damping} % Memo subject
+
+\memodate{May 2, 2017} % Date, set to \today for automatically printing todays date
+
+\logo{\includegraphics[width=0.25\textwidth]{logo-XIFU.png}} % logo at the top right of the memo
+
+\bibliographystyle{unsrt-fr_LR}
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+\maketitle % Print the memo header information
+
+%----------------------------------------------------------------------------------------
+%	MEMO CONTENT
+%----------------------------------------------------------------------------------------
+
+The TES current profile after a temperature impulse is given by \cite{IrwinHilton2005}:
+
+\begin{align}
+I(t)\propto\frac{e^{-t/\tau_{+}}-e^{-t/\tau_{-}}}{1/\tau_{+}-1/\tau_{-}}
+\end{align} 
+
+$\tau_{+}$ and $\tau_{-}$ are respectively the \enquote{rise time constant} and the \enquote{fall time constant} of the TES current profile.
+
+
+We have:
+
+\begin{align}
+I(t)\propto\frac{e^{-t/\tau_{+}}-e^{-t/\tau_{-}}}{1/\tau_{+}-1/\tau_{-}}= &\frac{e^{[-t(1/\tau_{+}-1/\tau_{-})-t/\tau_{-}]}-e^{[t(1/\tau_{+}-1/\tau_{-})-t/\tau_{+}]}}{1/\tau_{+}-1/\tau_{-}}\nonumber \\
+= &\frac{e^{-t(1/\tau_{+}-1/\tau_{-})}e^{-t/\tau_{-}}-e^{t(1/\tau_{+}-1/\tau_{-})}e^{-t/\tau_{+}}}{1/\tau_{+}-1/\tau_{-}}
+\label{eq_cur_prof}
+\end{align} 
+
+As $e^x\underset{x\to 0}{\longrightarrow} 1+x$, in the case of critical damping equation \ref{eq_cur_prof} becomes:
+
+\begin{align}
+\frac{e^{-t/\tau_{+}}-e^{-t/\tau_{-}}}{1/\tau_{+}-1/\tau_{-}}= &\frac{\left(1-t(1/\tau_{+}-1/\tau_{-})\right)e^{-t/\tau_{-}}-\left(1+t(1/\tau_{+}-1/\tau_{-})\right)e^{-t/\tau_{+}}}{1/\tau_{+}-1/\tau_{-}} \nonumber \\
+= &-\frac{e^{-t/\tau_{+}}-e^{-t/\tau_{-}}}{1/\tau_{+}-1/\tau_{-}}-te^{-t/\tau_{-}}-te^{-t/\tau_{+}}\nonumber \\
+= &-t/2\left(e^{-t/\tau_{-}}+e^{-t/\tau_{+}}\right)
+\end{align} 
+
+So the current profile in the case of critical damping ($\tau_{+}{\to} \tau_{-}$) is:
+\begin{align}
+I(t)\propto &-te^{-t/\tau_{\pm}}
+\end{align} 
+
+Figure \ref{fig_pulse} shows the TES current profile in the case of critical damping.
+
+\begin{figure}[htp]
+\begin{center}
+\includegraphics[width=320pt]{pulse.png}
+\caption{Shape of a current pulse in the case of critical damping with $\tau_{\pm}=$ \unit{286}{\micro\second}. Even if $\tau_{+}=\tau_{-}=\tau_{\pm}$, the pulse shape is not symmetric.}
+\label{fcurrent_pulse_profile}
+\label{fig_pulse}
+\end{center}
+\end{figure}
+
+%----------------------------------------------------------------------------------------
+\bibliography{biblio}
+
+\end{document}

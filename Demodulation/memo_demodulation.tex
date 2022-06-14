@@ -1,0 +1,130 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Memo
+%
+% The latex template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original author:
+% Rob Oakes (http://www.oak-tree.us) with modifications by:
+% Vel (vel@latextemplates.com)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[a4paper,11pt]{texMemo} % Set the paper size (letterpaper, a4paper, etc) and font size (10pt, 11pt or 12pt)
+
+\usepackage{amsmath}              %% permet de générer un index automatiquement
+\usepackage{numprint}
+\usepackage{parskip} % Adds spacing between paragraphs
+\usepackage[babel=true]{csquotes} % pour les guillemets. csquotes va utiliser la langue déÈfinie dans babel
+\setlength{\parindent}{15pt} % Indent paragraphs
+\usepackage{numprint}
+\usepackage[squaren,Gray]{SIunits} % pour les unités 
+\usepackage{cancel} % pour barrer du texte
+\usepackage{multicol} % pour plusieurs equations sur la mÍme ligne
+
+\graphicspath{{./figures/}}
+
+%----------------------------------------------------------------------------------------
+%	MEMO INFORMATION
+%----------------------------------------------------------------------------------------
+
+%\memoto{James Smith} % Recipient(s)
+
+\memofrom{Laurent Ravera} % Sender(s)
+
+\memosubject{Impact of modulation and demodulation operations in AC-readout} % Memo subject
+
+\memodate{May 29, 2017} % Date, set to \today for automatically printing todays date
+
+\logo{\includegraphics[width=0.25\textwidth]{logo-XIFU.png}} % logo at the top right of the memo
+
+\bibliographystyle{unsrt-fr_LR}
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+\maketitle % Print the memo header information
+
+%----------------------------------------------------------------------------------------
+%	MEMO CONTENT
+%----------------------------------------------------------------------------------------
+
+\section{Demodulation of the signal}
+
+At the BBFB firmware input, the carrier signal $\cos\left(\omega t + \phi\right)$ is amplitude modulated by the "science signal" $S(t)$. To do the demodulation we multiply this input signal by the complex signal $e^{-i\omega t} $ (same frequency as the AC-carrier) as follows:
+
+\begin{align}
+\cos\left(\omega t + \phi\right)\times S(t)\times e^{-i\omega t} 
+=&\left\{ 
+	\begin{array}{ll}
+		\cos\left(\omega t + \phi\right)\times S(t)\times \cos\left(\omega t\right)\\
+		-\cos\left(\omega t + \phi\right)\times S(t)\times \sin\left(\omega t\right)\\
+	\end{array}
+	\right.\\
+=&\left\{ 
+	\begin{array}{ll}
+		S(t)\times \frac{1}{2}\times \left[\cancel{\cos\left(2\omega t + \phi\right)}+cos\left(\phi\right)\right]\\
+		-S(t)\times \frac{1}{2}\times \left[\cancel{\sin\left(2\omega t + \phi\right)}+sin\left(-\phi\right)\right]\\
+	\end{array}
+	\right. \label{equ_neglect} \\ 
+=&\left\{ 
+	\begin{array}{ll}
+		\frac{S(t)}{2}\times cos\left(\phi\right)\\
+		\frac{S(t)}{2}\times sin\left(\phi\right)\\
+	\end{array}
+	\right.
+\end{align} 
+
+
+The BBFB firmware computes the module of the demodulated signal, which is:
+
+\begin{align}
+\left|S^d(t)\right|=\sqrt{I^2+Q^2}=\frac{S(t)}{2}
+\end{align} 
+
+The power of the science signal has been divided by four in this process: 
+\begin{itemize}
+\item
+A factor of two comes from AC-type modulation in the TES: modulating a sine wave produces a loss by a factor of two in power compared to modulating a DC-signal.
+\item
+An other factor of two comes from the demodulation and the filtering of the high frequencies (in equation \ref{equ_neglect}). 
+\end{itemize}
+
+
+\section{Demodulation of the noise}
+
+We distinguish two kind of noise: the noise from the TES $N_{TES}(t)$ and the noise from the amplification chain $N(t)$.
+
+
+The noise from the TES is band-limited so that the demodulation has exactly the same impact on $N_{TES}(t)$ than on $S(t)$:
+\begin{align}
+\left|N^d_{TES}(t)\right|=\frac{N_{TES}(t)}{2}
+\end{align} 
+
+
+The noise from the amplification chain is white so that the shift to the high frequencies does not allow to neglect the terms in $2\omega t$ in the equation \ref{equ_neglect}. The loss of power by a factor of two is not applicable in this case and thus we have:
+\begin{align}
+\left|N^d(t)\right|=\frac{N(t)}{\sqrt{2}}
+\end{align} 
+
+
+\section{Comparison with DC-type readout}
+
+
+In the case of a DC-type biasing, the signal and the noises obtained after the readout directly: 
+
+\begin{multicols}{3}\noindent
+\begin{equation}S^d(t) = S(t) \nonumber \end{equation} 
+\begin{equation}N_{TES}^d(t)=N_{TES}(t) \nonumber \end{equation}
+\begin{equation}N^d(t)=N(t)\end{equation}
+\end{multicols}
+
+
+%----------------------------------------------------------------------------------------
+\bibliography{biblio}
+
+\end{document}

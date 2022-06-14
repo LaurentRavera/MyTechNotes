@@ -1,0 +1,11 @@
+*.png
+*.pdf
+*.jpg
+*.gz
+*.aux
+*.log
+*.idx
+*.out
+*.toc
+*.cls
+*.bst
