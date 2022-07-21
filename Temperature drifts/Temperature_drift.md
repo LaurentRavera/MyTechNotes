@@ -6,7 +6,7 @@ This corresponds to a linear drift of 0.2 K over 2000 s.
 
 Indeed, for a linear drift with a slope A, the rms is:
 
-$$rms=\sqrt{\frac{1}{2T}\int_{-T}^T{(At)^2.dt}}=\sqrt{\frac{1}{2T}\left[\frac{A^2}{3}.T^3\right]_{-T}^T}=\frac{AT}{\sqrt{3}}$$
+$$rms=\sqrt{\frac{1}{2T}\int_{-T}^T{(At)^2.dt}}=\sqrt{\frac{1}{2T}\left[\frac{A^2}{3}.T^3\right]_{-T}^T}=\frac{AT}{\sqrt{3}}$$ (1)
 
 If D is the total drift, we have
 
